@@ -18,7 +18,12 @@ module.exports = {
   },
   // 模块
   module: {
-    rules: [{ // 加载 CSS
+    rules: [{ // js babel编译
+      test: /\.js|jsx$/,
+      use: [
+        'babel-loader'
+      ]
+    }, { // 加载 CSS
       test: /\.css$/,
       use: ExtractTextPlugin.extract({
         fallback: "style-loader",
