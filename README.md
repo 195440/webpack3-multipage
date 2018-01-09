@@ -4,6 +4,8 @@
 
 本文仅作为webpack入门学习交流，不作为实际项目参考
 
+官方文档：https://doc.webpack-china.org/guides/
+
 ---
 
 ### webpack是什么
