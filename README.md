@@ -1,4 +1,4 @@
-# webpack3+ 学习笔记
+# webpack3+ 笔记
 
 基于webpack的前端工程化开发多页面
 
@@ -20,6 +20,11 @@ webpack可以看做是模块打包机：它做的事情是，分析你的项目�
 
 + node版本过低，你可以通过node -v查看版本信息；
 + 网络比较慢，由于npm安装比较慢，你可以通过cnpm或者科学上网，进行安装；
+
+    #安装cnpm
+
+    npm install -g cnpm --registry=https://registry.npm.taobao.org
+
 + 如果你使用的是Linux或者Mac，可能是权限问题，请使用sudo；
 
 ### 开发模式运行
