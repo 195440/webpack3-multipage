@@ -1,69 +1,3 @@
-# webpack3+ 学习笔记
-
-基于webpack的前端工程化开发多页面
-
-本文仅作为webpack入门学习交流，不作为实际项目参考
-
----
-
-### webpack是什么
-
-webpack可以看做是模块打包机：它做的事情是，分析你的项目结构，找到JavaScript模块以及其它的一些浏览器不能直接运行的拓展语言（Sass，TypeScript等），并将其转换和打包为合适的格式供浏览器使用。在3.0出现后，Webpack还肩负起了优化项目的责任。
-
-<img src="https://github.com/195440/webpack3-multipage/blob/master/webpack.png">
-
-### 初始化项目、安装依赖 (下载本项目并进入到目录)
-
-    npm install --save
-
-如果安装失败，可能有三种原因：
-
-+ node版本过低，你可以通过node -v查看版本信息；
-+ 网络比较慢，由于npm安装比较慢，你可以通过cnpm或者科学上网，进行安装；
-+ 如果你使用的是Linux或者Mac，可能是权限问题，请使用sudo；
-
-### 开发模式运行
-
-    npm run start
-
-### 生成模式打包
-
-    npm run build
-
-
-### 主要目录结构
-
-```
-- webpack3-multipage-master
-  - src                #代码开发目录
-    - common              #共通引用
-      + css                  
-      + data
-      + img
-      + js
-    - view             #模板
-      - index          #页面一
-          index.html   
-          index.js
-          style.css
-      - index2         #页面二
-          index2.js 
-  - dist               #webpack编译打包输出目录，无需建立目录可由webpack根据配置自动生成
-    + assets                
-      index.html
-      index.html
-  + node_modules       #所使用的nodejs模块
-  package.json         #项目配置
-  package-lock.json    #初始化自动生成文件
-  webpack.common.js    #webpack共通配置
-  webpack.dev.js       #webpack开发模式配置
-  webpack.prod.js      #webpack生成模式打包配置  
-  README.md            #项目说明
-```
-
-### webpack.common.js 共通配置
-
-```javascript
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin'); // 用于修正打包index.html引用更新
@@ -139,51 +73,17 @@ module.exports = {
       inject: 'body', // js插入的位置，true/'head'/'body'/false
       hash: true, //为静态资源生成hash值
       chunks: ['common', 'index2', 'print'], // 需要引入的chunk，不配置就会引入所有页面的资源
-      // minify: { //压缩HTML文件  
-      //   removeComments: true, //移除HTML中的注释
-      //   collapseWhitespace: false //删除空白符与换行符
-      // }
+      minify: { //压缩HTML文件  
+        removeComments: true, //移除HTML中的注释
+        collapseWhitespace: false //删除空白符与换行符
+      }
     }),
     new CleanWebpackPlugin(['dist']), // 用于清理dist文件夹
     new webpack.optimize.CommonsChunkPlugin({ // 提取共通去重
       name: 'common' // 指定公共 bundle 的名称。
     }),
-    new webpack.ProvidePlugin({
+    new webpack.ProvidePlugin({　// 加载插件配置
       _: 'lodash'
     }),
   ],
 };
-```
-
-### webpack.dev.js 共通配置
-
-```javascript
-const merge = require('webpack-merge');
-const common = require('./webpack.common.js');
-
-module.exports = merge(common, {
-  devtool: 'source-map', // 开启代码地图
-  devServer: {
-    contentBase: './',
-    host:'localhost', // 服务地址
-    port: 9090, // 端口
-  }
-});
-```
-
-### webpack.prod.js 共通配置
-
-```javascript
-const merge = require('webpack-merge');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
-const common = require('./webpack.common.js');
-
-module.exports = merge(common, {
-  devtool: 'source-map', // 开启代码地图建议开启
-  plugins: [ // 代码压缩
-    new UglifyJSPlugin({
-      sourceMap: true
-    })
-  ]
-});
-```
